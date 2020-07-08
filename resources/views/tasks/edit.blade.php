@@ -4,7 +4,7 @@
 
 <!-- ここにページ毎のコンテンツを書く -->
 
-    <h1>id: {{ $message->id }} 編集ページ</h1>
+    <h1>id: {{ $task->id }} 編集ページ</h1>
 
     <div class="row">
         <div class="col-6">
