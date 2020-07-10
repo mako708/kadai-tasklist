@@ -2,6 +2,13 @@
 
 @section('content')
 
+    @if (count($errors) > 0)
+        <ul class="alert alert-danger" role="alert">
+            @foreach ($errors->all() as $error)
+                <li class="ml-4">{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
 <!-- ここにページ毎のコンテンツを書く -->
  <h1>タスク一覧</h1>
 
@@ -10,6 +17,7 @@
             <thead>
                 <tr>
                     <th>id</th>
+                    <th>status</th>
                     <th>タスク</th>
                 </tr>
             </thead>
@@ -17,6 +25,7 @@
                 @foreach ($tasks as $task)
                 <tr>
                     <td>{!! link_to_route('tasks.show', $task->id, ['task' => $task->id]) !!}</td>
+                     <td>{{ $task->status }}</td>
                     <td>{{ $task->content }}</td>
                 </tr>
                 @endforeach
