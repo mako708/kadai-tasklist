@@ -15,10 +15,20 @@ class TasksController extends Controller
     public function index()
     {
         //
-        $tasks = Task::all();
-        return view('tasks.index', [
-            'tasks' => $tasks,
-        ]);
+        //$tasks = Task::all();
+        //return view('tasks.index', [
+         //   'tasks' => $tasks,
+       // ]);
+       $tasks = [];
+       if (\Auth::check()) {
+           $user = \Auth::user();
+           $tasks =$user->tasks()->orderBy('created_at','desc')->paginate(10);
+           $tasks = [
+               'user' => $user,
+               'tasks' => $tasks,
+               ];
+           }
+        return view('welcome',$tasks);   
     }
 
     /**
@@ -43,18 +53,25 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $request->validate([
              'status' => 'required|max:10',
              'content' => 'required|max:10',
             
             ]);
-        //
+        
         $task = new Task;
         $task->status = $request->status;  
         $task->content = $request->content;
-        $task->save();
+        $task->user_id = $request->user_id;
+     
         
-        return redirect('/');
+        $request->user()->tasks()->create([
+          
+            'status' => $request->status,
+            'content' => $request->content,
+        ]);
+        
+        return back();
     }
 
     /**
@@ -98,7 +115,7 @@ class TasksController extends Controller
     public function update(Request $request, $id)
     {
       
-         $this->validate($request,[
+         $this->validate([
             'status' => 'required|max:10',
             'content' => 'required|max:10',
           ]);
@@ -121,8 +138,10 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($id);
         //
-        $task->delete();
+        if (\Auth::id() === $task->user_id){
+            $task->delete();    
+        }
         
-        return redirect('/');
+        return back();
     }
 }

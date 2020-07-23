@@ -9,7 +9,7 @@
             @endforeach
         </ul>
     @endif
-<!-- ここにページ毎のコンテンツを書く -->
+
  <h1>タスク一覧</h1>
 
     @if (count($tasks) > 0)

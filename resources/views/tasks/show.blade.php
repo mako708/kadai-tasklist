@@ -10,7 +10,7 @@
         </ul>
     @endif
 
-<!-- ここにページ毎のコンテンツを書く -->
+
  <h1>id = {{ $task->id }} 詳細ページ</h1>
 
     <table class="table table-bordered">
