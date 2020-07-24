@@ -15,10 +15,11 @@ class TasksController extends Controller
     public function index()
     {
         //
-        //$tasks = Task::all();
-        //return view('tasks.index', [
-         //   'tasks' => $tasks,
-       // ]);
+        $tasks = Task::all();
+        return view('tasks.index', [
+           'tasks' => $tasks,
+        ]);
+        
        $tasks = [];
        if (\Auth::check()) {
            $user = \Auth::user();
@@ -60,15 +61,14 @@ class TasksController extends Controller
             ]);
         
         $task = new Task;
-        $task->status = $request->status;  
+        $task->status = $request->status;
         $task->content = $request->content;
         $task->user_id = $request->user_id;
-     
         
-        $request->user()->tasks()->create([
-          
+       $request->user()->tasks()->create([
             'status' => $request->status,
             'content' => $request->content,
+
         ]);
         
         return back();
@@ -115,7 +115,7 @@ class TasksController extends Controller
     public function update(Request $request, $id)
     {
       
-         $this->validate([
+         $request->validate([
             'status' => 'required|max:10',
             'content' => 'required|max:10',
           ]);
@@ -136,12 +136,12 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        $task = Task::findOrFail($id);
+        $task = \App\Task::findOrFail($id);
         //
-        if (\Auth::id() === $task->user_id){
+        if (\Auth::id() == $task->user_id){
             $task->delete();    
         }
         
-        return back();
+        return redirect('/');
     }
 }

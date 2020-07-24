@@ -2,16 +2,7 @@
 
 @section('content')
     @if (Auth::check())
-         <div class="row">
-             <aside class="col-sm-4">
-                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">{{ Auth::user()->name }}</h3>  
-                    </div> 
-                 </div>
-             </aside>
-         </div>
-         
+    　 {{ Auth::user()->name }}
     @else    
     <div class="center jumbotron">
         <div class="text-center">
